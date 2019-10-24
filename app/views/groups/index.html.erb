@@ -1,0 +1,50 @@
+<h1>Welcome, <%= current_user.first_name %></h1>
+
+<h5>Here are the organizations you may join:</h5>
+
+<% for group in @groups %>
+
+
+<% for user in group.users %>
+<%if user == current_user%>
+<span><a href="/delete/<%=group.id%>">X</a></span>
+<%end%>
+<%end%>
+<p><a href="/groups/<%=group.id%>"><%=group.org_name%></a></p>
+<br>
+<% number_in_group =0 %>
+<% for attendee in @attendee %>
+<% for user in group.users %>
+<%if user.id ==attendee.user_id%>
+<% number_in_group= number_in_group + 1%>
+<%end%>
+<%end%>
+
+<% end %>
+<span>Members: </span><%=number_in_group %><br>
+<p><%=group.description %></p>
+
+<% end %>
+
+<br>
+
+
+<form action="/groups" method="post">
+    <input type="hidden" name="authenticity_token" id="<%= form_authenticity_token %>">
+    <label for="org_name">Org Name:</label>
+    <input type="text" name="org_name">
+    <br>
+    <label for="description">Description</label>
+    <input type="text" name="description">
+    <br>
+
+    <br>
+    <input type="submit" value="Create"> 
+
+    <% if flash[:errors] %>
+      <% flash[:errors].each do |e| %>
+        <%= e %>
+      <% end %>
+    <% end %>
+
+</form> 

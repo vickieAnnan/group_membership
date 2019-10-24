@@ -1,0 +1,45 @@
+<h1><%= @group.org_name%></h1>
+
+<a href="/groups/">Dashboard</a>
+<!-- <% if !current_user.groups.includes(@group) %>
+<a href="/JoinGroup/<%= @group.id %> ">Join Group</a>
+<% else  %>
+ <a href="/LeaveGroup/<%= @group.id %>">Leave Group</a> 
+<%end%> -->
+<%userFound = false%>
+<% for attendee in @attendee %>
+<% for user in @group.users %>
+<%if user.id ==attendee.user_id%>
+<%userFound = true%>
+<%end%>
+<%end%>
+<% end %>
+<%if userFound%>
+<a href="/LeaveGroup/<%= @group.id %>">Leave Group</a>
+<%else%>
+<a href="/JoinGroup/<%= @group.id %> ">Join Group</a>
+<%end%>
+
+
+
+
+
+<p><%=@group.description %></p>
+<br>
+
+
+<p>Created By:
+    <% if @group.user.first_name == current_user.first_name %> YOU
+    <% else %>
+    <%= @group.user.first_name %>
+    <% end%>
+</p>
+
+<p>Members: </p>
+<% for attendee in @attendee %>
+<% for user in @group.users %>
+<%if user.id ==attendee.user_id%>
+<%= user.first_name %>, <%= user.last_name%><br>
+<%end%>
+<%end%>
+<% end %>
